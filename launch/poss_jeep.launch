@@ -4,12 +4,16 @@
 	<arg name="baud" default="115200" />
 	<arg name="verbose" default="true" />
 	<arg name="savelog" default="true" />
+	<arg name="updaterate" default="100" />
+  	<arg name="gpsrate" default="0.01" />
 
 <node pkg="poss_jeep" type="xwgpsimu.py" name="Xwgpsimu" output="screen">
       <param name="port" value="$(arg port)" />
       <param name="baud" value="$(arg baud)" />
       <param name="verbose" value="$(arg verbose)" />
       <param name="savelog" value="$(arg savelog)" />
+      <param name="gpsrate" value="$(arg gpsrate)" />
+      <param name="updaterate" value="$(arg updaterate)" />
 </node>
 
 </launch>
