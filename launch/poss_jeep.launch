@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <launch>
-  <arg name="gpsimu_en" default="true" />
+  <arg name="gpsimu_en" default="false" />
   <arg name="urg_en" default="false" />
   <arg name="ladybug_en" default="false" />
+  <arg name="velodyne_en" default="false" />
+  <arg name="flea2_en" default="false" />
+  <arg name="canbus_en" default="false" />
   
   <arg name="gpsport" default="/dev/ttyS1" />
   <arg name="gpsbaud" default="115200" />
@@ -49,5 +52,12 @@
     <node pkg="poss_jeep" type="ladybugrec.sh" name="ladybugrecorder" output="screen">
     </node>
   </group>
+
+  <!--official velodyne -->
+  <group if="$(arg velodyne_en)">
+    <node pkg="poss_jeep" type="vdump.sh" name="velodyne_recoder" output="screen" args="eno1">
+    </node>
+  </group>
+
 
 </launch>
