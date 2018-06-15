@@ -9,7 +9,7 @@ add_message_files(FILES XwGpsImu.msg CanSteer.msg CanOdom.msg CanGear.msg)
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS 
   CATKIN_DEPENDS roscpp std_msgs geometry_msgs sensor_msgs message_runtime tf
   DEPENDS boost
 )
@@ -23,7 +23,6 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
-  include
 )
 
 # add_library (serial_comm src/serial_comm.cpp)

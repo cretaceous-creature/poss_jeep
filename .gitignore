@@ -1,3 +1,5 @@
 # Build and Release Folders
 *~
 *.user
+*.log
+*.pgr

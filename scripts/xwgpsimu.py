@@ -3,6 +3,7 @@
 import rospy
 import roslib
 import rospkg
+import os
 import serial
 import time
 
@@ -46,7 +47,8 @@ class Serial_XWGPS:
         if self.savelog: 
             t = time.time()
             rospack = rospkg.RosPack()
-            self.logfile = open(rospack.get_path("poss_jeep")+"/log/" +"gpslog" + str(t) + '.log', 'w')
+            #self.logfile = open(rospack.get_path("poss_jeep")+"/log/" +"gpslog" + str(t) + '.log', 'w')
+            self.logfile = open(os.environ['HOME'] +"/data/gpslog" + str(t) + '.log', 'w')
 
         #start to send data
         self.ser.write("$cmd,output,com0,gpfpd,%.2f*ff\r\n" % self.gpsrate)
