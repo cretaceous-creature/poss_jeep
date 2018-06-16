@@ -50,7 +50,7 @@
       <param name="angle_max" value="1.5707963"/>
     </node>
 
-    <node name="urgrecord" pkg="rosbag" type="record" args="/scan -o ~/data"/>
+    <node name="urgrecord" pkg="rosbag" type="record" args="scan -o /home/poss/data/data"/>
   </group>
 
   <!--official ladybug recorder -->

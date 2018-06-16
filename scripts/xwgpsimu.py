@@ -44,11 +44,11 @@ class Serial_XWGPS:
         self.XwGps.header.frame_id = "/gpsimu"
         self._pub_XwGps = rospy.Publisher("/GPSIMUdata", XwGpsImu, queue_size = 1)
         #write a log file
-        if self.savelog: 
-            t = time.time()
+        if self.savelog:             
+            t = time.strftime("%Y-%m-%d-%H-%M-%S",time.localtime())
             rospack = rospkg.RosPack()
-            #self.logfile = open(rospack.get_path("poss_jeep")+"/log/" +"gpslog" + str(t) + '.log', 'w')
-            self.logfile = open(os.environ['HOME'] +"/data/gpslog" + str(t) + '.log', 'w')
+            #self.logfile = open(rospack.get_path("poss_jeep")+"/log/" +"gpslog" + t + '.log', 'w')
+            self.logfile = open(os.environ['HOME'] +"/data/gpslog" + t + '.log', 'w')
 
         #start to send data
         self.ser.write("$cmd,output,com0,gpfpd,%.2f*ff\r\n" % self.gpsrate)
