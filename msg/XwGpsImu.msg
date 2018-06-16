@@ -2,6 +2,8 @@ Header header
 
 string msgId	##typically this data is for GPFPD
 
+float32 systime
+
 uint16 gpsWeek
 float32 gpsTime
 

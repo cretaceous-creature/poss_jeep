@@ -72,13 +72,15 @@ class Serial_XWGPS:
                     rospy.loginfo(data_in)
                     #data will be like $GPFPD, , , , ,blabla
                 if self.savelog:
-                    self.logfile.write(data_in)
+                    self.logfile.write(str(time.time()) + data_in)
                     
                 index = data_in.find(self.header)
                 if index == 0:
                     datasplitdone = data_in.split(",") ##comma to split
                     self.XwGps.header.stamp = rospy.Time.now()
                     self.XwGps.msgId = datasplitdone[0] if datasplitdone[0] else ''
+                    self.XwGps.systime = time.time()
+                    rospy.loginfo(self.XwGps.systime)
                     self.XwGps.gpsWeek = int(datasplitdone[1]) if datasplitdone[1] else -1
                     self.XwGps.gpsTime = float(datasplitdone[2]) if datasplitdone[2] else -1
                     self.XwGps.heading = float(datasplitdone[3]) if datasplitdone[3] else -1
