@@ -4,7 +4,7 @@
   <arg name="urg_en" default="false" />
   <arg name="ladybug_en" default="false" />
   <arg name="velodyne_en" default="false" />
-  <arg name="flea2_en" default="false" />
+  <arg name="flea2_en" default="true" />
   <arg name="canbus_en" default="false" />
   
   <arg name="gpsport" default="/dev/ttyS1" />
@@ -19,6 +19,7 @@
   <arg name="urgbaud" default="115200" />
   <arg name="urgframeid" default="laser" />
 
+  <arg name="flea2_vis" default="false" />
 
   <!--gpsimu node  -->
   <group if="$(arg gpsimu_en)" >    
@@ -58,6 +59,9 @@
     <node pkg="poss_jeep" type="vdump.sh" name="velodyne_recoder" output="screen" args="eno1">
     </node>
   </group>
-
+  <group>
+    <node pkg="poss_jeep" type="flea2.sh" name="flea2_recoder" output="screen" args="$(arg flea2_vis)">
+    </node>
+  </group>
 
 </launch>
