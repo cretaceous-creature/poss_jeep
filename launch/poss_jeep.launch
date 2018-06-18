@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <launch>
-  <arg name="gpsimu_en" default="true" />
-  <arg name="urg_en" default="true" />
-  <arg name="ladybug_en" default="true" />
-  <arg name="velodyne_en" default="false" />
-  <arg name="flea2_en" default="false" />
-  <arg name="canbus_en" default="false" />
+  <arg name="gpsimu_en" default="false" />
+  <arg name="urg_en" default="false" />
+  <arg name="ladybug_en" default="false" />
+  <arg name="velodyne_en" default="true" />
+  <arg name="flea2_en" default="true" />
+  <arg name="canbus_en" default="true" />
   
   <arg name="gpsport" default="/dev/ttyS1" />
   <arg name="gpsbaud" default="115200" />
@@ -68,6 +68,12 @@
   <!--official flea2 -->
   <group if="$(arg flea2_en)">
     <node pkg="poss_jeep" type="flea2.sh" name="flea2_recoder" output="screen" args="$(arg flea2_vis)">
+    </node>
+  </group>
+
+  <!--official canbus -->
+  <group if="$(arg canbus_en)">
+    <node pkg="poss_jeep" type="poss_canbus_node" name="canbus_receiver" output="screen">
     </node>
   </group>
 
