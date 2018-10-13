@@ -2,7 +2,7 @@
 
 cd ~/
 mkdir -p data
-cd data/
+cd ./data/
 pwd
 #run ladybug recorder
 LadybugRecorderConsole

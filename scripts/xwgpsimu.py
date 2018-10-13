@@ -25,7 +25,7 @@ class Serial_XWGPS:
         self.port = rospy.get_param("~port", self.port)
         self.baud = rospy.get_param('~baud', self.baud)
         self.verbose = rospy.get_param('~verbose', self.verbose)
-        self.verbose = rospy.get_param('~savelog', self.savelog)
+        self.savelog = rospy.get_param('~savelog', self.savelog)
         self.serialtimeout = rospy.get_param('~serialtimeout', self.serialtimeout)
         self.updaterate = rospy.get_param('~updaterate', self.updaterate)
         self.gpsrate = rospy.get_param('~gpsrate', self.gpsrate) 
@@ -72,34 +72,37 @@ class Serial_XWGPS:
                     rospy.loginfo(data_in)
                     #data will be like $GPFPD, , , , ,blabla
                 if self.savelog:
-                    self.logfile.write(str(time.time()) + data_in)
+                    self.logfile.write(('%.6f,' % time.time()) + data_in)
                     
                 index = data_in.find(self.header)
                 if index == 0:
-                    datasplitdone = data_in.split(",") ##comma to split
-                    self.XwGps.header.stamp = rospy.Time.now()
-                    self.XwGps.msgId = datasplitdone[0] if datasplitdone[0] else ''
-                    self.XwGps.systime = time.time()
-                    rospy.loginfo(self.XwGps.systime)
-                    self.XwGps.gpsWeek = int(datasplitdone[1]) if datasplitdone[1] else -1
-                    self.XwGps.gpsTime = float(datasplitdone[2]) if datasplitdone[2] else -1
-                    self.XwGps.heading = float(datasplitdone[3]) if datasplitdone[3] else -1
-                    self.XwGps.pitch = float(datasplitdone[4])  if datasplitdone[4] else -1
-                    self.XwGps.roll = float(datasplitdone[5]) if datasplitdone[5] else -1
-                    self.XwGps.lattitude = float(datasplitdone[6]) if datasplitdone[6] else -1
-                    self.XwGps.longitude = float(datasplitdone[7]) if datasplitdone[7] else -1
-                    self.XwGps.altitude = float(datasplitdone[8]) if datasplitdone[8] else -1
-                    self.XwGps.ve = float(datasplitdone[9]) if datasplitdone[9] else -1
-                    self.XwGps.vn = float(datasplitdone[10]) if datasplitdone[10] else -1
-                    self.XwGps.vu = float(datasplitdone[11]) if datasplitdone[11] else -1
-                    self.XwGps.baseline = float(datasplitdone[12]) if datasplitdone[12] else -1
-                    self.XwGps.nsv1 = int(datasplitdone[13]) if datasplitdone[13] else -1
-                    self.XwGps.nsv2 = int(datasplitdone[14]) if datasplitdone[14] else -1
-                    # status*parity
-                    finaltwo = datasplitdone[15].split('*')
-                    self.XwGps.status = int(finaltwo[0],16)
-                    self.XwGps.parity = int(finaltwo[1],16)
-                    self._pub_XwGps.publish(self.XwGps)
+                    try:
+                        datasplitdone = data_in.split(",") ##comma to split
+                        self.XwGps.header.stamp = rospy.Time.now()
+                        self.XwGps.msgId = datasplitdone[0] if datasplitdone[0] else ''
+                        self.XwGps.systime = time.time()
+#                        rospy.loginfo(self.XwGps.systime)
+                        self.XwGps.gpsWeek = int(datasplitdone[1]) if datasplitdone[1] else -1
+                        self.XwGps.gpsTime = float(datasplitdone[2]) if datasplitdone[2] else -1
+                        self.XwGps.heading = float(datasplitdone[3]) if datasplitdone[3] else -1
+                        self.XwGps.pitch = float(datasplitdone[4])  if datasplitdone[4] else -1
+                        self.XwGps.roll = float(datasplitdone[5]) if datasplitdone[5] else -1
+                        self.XwGps.lattitude = float(datasplitdone[6]) if datasplitdone[6] else -1
+                        self.XwGps.longitude = float(datasplitdone[7]) if datasplitdone[7] else -1
+                        self.XwGps.altitude = float(datasplitdone[8]) if datasplitdone[8] else -1
+                        self.XwGps.ve = float(datasplitdone[9]) if datasplitdone[9] else -1
+                        self.XwGps.vn = float(datasplitdone[10]) if datasplitdone[10] else -1
+                        self.XwGps.vu = float(datasplitdone[11]) if datasplitdone[11] else -1
+                        self.XwGps.baseline = float(datasplitdone[12]) if datasplitdone[12] else -1
+                        self.XwGps.nsv1 = int(datasplitdone[13]) if datasplitdone[13] else -1
+                        self.XwGps.nsv2 = int(datasplitdone[14]) if datasplitdone[14] else -1
+                        # status*parity
+                        finaltwo = datasplitdone[15].split('*')
+                        self.XwGps.status = int(finaltwo[0],16)
+                        self.XwGps.parity = int(finaltwo[1],16)
+                        self._pub_XwGps.publish(self.XwGps)
+                    except Exception as e:
+                        print(e)
             r.sleep()
 
 
