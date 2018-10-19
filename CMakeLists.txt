@@ -4,7 +4,7 @@ set(CMAKE_BUILD_TYPE Debug)
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs geometry_msgs message_generation tf)
 find_package(Boost REQUIRED COMPONENTS thread system signals)
 
-add_message_files(FILES XwGpsImu.msg CanSteer.msg CanOdom.msg CanGear.msg)
+add_message_files(FILES XwGpsImu.msg CanSteer.msg CanOdom.msg CanGear.msg CanRaw.msg)
 
 generate_messages(DEPENDENCIES std_msgs)
 
@@ -22,6 +22,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include/canbus
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -29,11 +30,12 @@ include_directories(
 # add_dependencies(serial_comm ${PROJECT_NAME}_gencpp)
 # target_link_libraries(serial_comm  ${catkin_LIBRARIES}  ${Boost_LIBRARIES})
 
-# add_executable(poss_jeep_node  src/poss_jeep_node.cpp)
-# add_dependencies(poss_jeep_node ${PROJECT_NAME}_gencpp)
-# target_link_libraries(poss_jeep_node  ${catkin_LIBRARIES}  ${Boost_LIBRARIES} serial_comm)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(poss_canbus_node  src/canbus/poss_canbus_node.cpp src/canbus/jeep_canbus.cpp)
+add_dependencies(poss_canbus_node ${PROJECT_NAME}_gencpp)
+target_link_libraries(poss_canbus_node  ${catkin_LIBRARIES} controlcan)
 
-# install(TARGETS poss_jeep_node
+# install(TARGETS poss_canbus_node
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
