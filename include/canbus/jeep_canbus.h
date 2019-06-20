@@ -29,6 +29,8 @@ private:
     ros::NodeHandle nh;
     ros::NodeHandle nhp;
     ros::Publisher rawdata_pub;
+
+    int count;
 };
 
 #endif // JEEPCANBUS_H
