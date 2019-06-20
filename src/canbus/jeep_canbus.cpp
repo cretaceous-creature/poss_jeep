@@ -13,13 +13,21 @@ JeepCanbus::~JeepCanbus() {
 }
 
 void JeepCanbus::processData() {
-    int len = VCI_Receive(m_DevType, m_DevIndex, 0, receivedata, 2500, 200);
+    int len = VCI_Receive(m_DevType, m_DevIndex, 0, receivedata, 2500, 200); 
+    
     for (int i = 0; i < len; i++) {
         if (receivedata[i].RemoteFlag != 0 || receivedata[i].ExternFlag != 0) {
             continue;
         }
         unsigned int id = receivedata[i].ID;
         if (id != 0x1E1 && id != 0x211 && id != 0x20E) continue;
+        if (count <= 0) {
+            ROS_INFO("Canbus data received. ID=%x", id);
+        }
+        if (count++ == 20) {
+            count = 0;
+        }
+
         poss_jeep::CanRaw canbus_msg;
         canbus_msg.header.stamp = ros::Time();
         canbus_msg.header.frame_id = "canbus";
@@ -66,6 +74,7 @@ bool JeepCanbus::open() {
 bool JeepCanbus::close() {
     if (!isRunning) return false;
     isRunning = false;
+    ROS_INFO("Canbus is closed~");
     if (VCI_CloseDevice(m_DevType, m_DevIndex) != OPENSUCCESS) {
         return false;
     }
